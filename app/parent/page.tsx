@@ -1,5 +1,6 @@
 "use client";
 
+import { KidProfilePanel } from "@/components/KidProfilePanel";
 import { useState } from "react";
 
 // Keep a simple view of the same presets we use on /adhd
@@ -94,7 +95,7 @@ const PRESETS: Preset[] = [
   {
     id: "blank",
     label: "Blank day",
-    description: "Empty grid; David builds from scratch.",
+    description: "Empty grid; your child builds from scratch.",
     placements: [],
   },
   {
@@ -142,7 +143,7 @@ interface PreviewSlot {
 function buildPreviewSlots(preset: Preset): PreviewSlot[] {
   const slots: PreviewSlot[] = [];
   for (let i = 0; i < TOTAL_SLOTS; i++) {
-    const minutes = (START_HOUR * 60) + i * 15;
+    const minutes = START_HOUR * 60 + i * 15;
     const h = Math.floor(minutes / 60);
     const m = minutes % 60;
     slots.push({
@@ -169,7 +170,8 @@ function buildPreviewSlots(preset: Preset): PreviewSlot[] {
 }
 
 export default function ParentConsolePage() {
-  const [activePresetId, setActivePresetId] = useState<string>("regular-monday");
+  const [activePresetId, setActivePresetId] =
+    useState<string>("regular-monday");
 
   const activePreset =
     PRESETS.find((p) => p.id === activePresetId) ?? PRESETS[0];
@@ -190,7 +192,7 @@ export default function ParentConsolePage() {
           </h1>
           <p className="text-sm text-slate-400">
             This page is for parents only. Here you can review and (later) edit
-            the daily presets that David sees on his Command Center page.
+            the daily presets that your child sees on their Command Center page.
           </p>
           <p className="text-xs text-slate-500 mt-2">
             Current status: read-only preview. In the next step we&apos;ll add
@@ -198,6 +200,9 @@ export default function ParentConsolePage() {
             simple editor to create new ones.
           </p>
         </header>
+
+        {/* 🔹 New: Kid profile settings panel */}
+        <KidProfilePanel />
 
         <section className="bg-slate-900/80 border border-slate-800 rounded-3xl p-4 md:p-5 shadow-xl flex flex-col gap-4">
           <div className="flex flex-col md:flex-row md:items-start gap-4">
@@ -243,8 +248,7 @@ export default function ParentConsolePage() {
                   <li>
                     Earliest time used:{" "}
                     <span className="font-mono">
-                      {previewSlots.find((s) => s.blockLabel)?.label ??
-                        "none"}
+                      {previewSlots.find((s) => s.blockLabel)?.label ?? "none"}
                     </span>
                   </li>
                   <li>
@@ -343,7 +347,7 @@ export default function ParentConsolePage() {
             <h3 className="font-semibold mb-1">What this page will do next</h3>
             <ul className="list-disc list-inside space-y-1">
               <li>
-                Add toggles for each preset (e.g., “David can use this
+                Add toggles for each preset (e.g., “Child can use this
                 preset”) and save that to the browser, so the{" "}
                 <span className="font-mono text-[11px]">/adhd</span> page only
                 shows approved presets.
